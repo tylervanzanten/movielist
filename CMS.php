@@ -51,7 +51,7 @@ NEW_MOVIE_LINK;
     	
 TABLE_START;
 
-      while ( $row = mysqli_fetch_assoc($result) ) {
+      while ( $row = mysqli_fetch_assoc($result) ) {  // repetition
         $priority = stripslashes($row['priority']);
         $title    = stripslashes($row['title']);
         $year     = stripslashes($row['year']);

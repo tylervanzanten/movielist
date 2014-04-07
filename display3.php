@@ -47,7 +47,7 @@
           // might need     $sql = sprintf("DELETE FROM users WHERE user_name = '".$user."'");   instead
           $result = mysql_query($sql);
            
-          echo "Account has been deleted.";
+          echo "Account has been deleted.";  //might need to output this somewhere special to make it look good.
       }
 	  
       $deleteItem = isset($_GET['deleteItem']) ? $_GET['deleteItem'] : '';
@@ -57,6 +57,9 @@
           echo $obj->display_new_form();
           print "Deleted!!!!!";
       }
+	  
+	  
+	  
       
     ?>
     

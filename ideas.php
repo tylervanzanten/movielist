@@ -4,10 +4,13 @@ Things to do:
 maybe (link three DBs together for director, writer, actor, and maybe genre)
 add delete capability  (and make sure the priorities get updated everytime something gets deleted)
 add edit capability
+add "clear list" button  and then ask "are you sure?"
 make it look nice
 add search capability
 automatically fetch the RIGHT info from imdb (be able to search by year and title)
 make the title in the list a link to the imdb URL for that movie
+
+probably change the class name from CMS to MovieList or something
 
 //title, year, genre, cast, director, writer, runtime, imdb rating, mpaa rating,
 
