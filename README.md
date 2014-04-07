@@ -1,6 +1,6 @@
 # PHP Movie Watch List
 
-**These files form a movie watch list.**
+**These files form an interactive movie watch list webpage.**
 
 
 
