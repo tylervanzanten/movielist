@@ -6,7 +6,7 @@
 
 It uses a mySQL database to store a list of movies.
 
-I did not write any of the files found in the imdbphp folder.  All of those files are from a project on [GitHub](https://github.com/FabianBeiner/PHP-IMDB-Grabber).  This is the code that enables the fetching of info from imdb.com
+I did not write any of the files found in the imdbphp folder.  All of those files are from a project on [GitHub](https://github.com/FabianBeiner/PHP-IMDB-Grabber).  This is the code that enables the fetching of info from [IMDb](http://www.imdb.com/).
 
 
 ## Usage
