@@ -10,6 +10,6 @@ I did not write any of the files found in the imdbphp folder.  All of those file
 
 ## Usage
 
-display.php is the file you want to run.  You will need to edit the SQL database info in display.php for it to work with your own database.
+display.php is the file you want to run, and MovieListCMS.php is the file that makes it work.  You will need to edit the SQL database info in display.php for it to work with your own database.
 
     
