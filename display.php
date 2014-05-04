@@ -2,7 +2,9 @@
 
   <!--
   	display.php is a PHP file which creates an instance of the class MovieClassCMS
-  	and calls methods to make it function as it should.
+  	and calls methods to make it function as it should.  It serves as an interactive
+  	movie watch list.  Note: there is no warning after "Clear List" is clicked, so
+  	avoid clicking it recklessly
   	
   	Author: Tyler VanZanten
   	Date: May 3, 2014
@@ -67,7 +69,7 @@
 	  
       $sort = isset($_GET['sort']) ? $_GET['sort'] : 'priority';  // sort by priority is default
       if ( $admin === "" && $deleteItem === "") {
-	      echo $obj->display($sort);                     // display the HTML table
+	      echo $obj->display($sort);                          // display the HTML table
       }      
       
     ?>
