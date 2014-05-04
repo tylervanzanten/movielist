@@ -1,19 +1,25 @@
 *								{ margin: 0; padding: 0; }
 
-.topOfList                      { font-size: 25px; color: blue;  } /* formatting for elements of the class topOfList   NEED TO FIND A WAY TO MAKE IT PERMANENTLY BLUE*/
-#clearList                      { text-align: right;  }
-body							{ font: 12px "Lucida Grande", Sans-Serif; background: #ccc; }
-#page-wrap						{ width: 700px; margin: 50px auto; padding: 20px; background: white; } /* formatting for elements with the id page-wrap */
+.topOfList                      { font-size: 25px; color: blue;  } /* formatting for elements of the class topOfList */
+#newMovie                       { color: blue; text-decoration: none; }
+#clearList                      { color: blue; text-decoration: none; }
+#sortLink                       { color: black; text-decoration: none; }
+a:hover                         {background-color: yellow;}
+a:visited                       {color: blue;}
+#page-wrap						{ width: 850px; margin: 50px auto; padding: 20px; background: white; } /* formatting for elements with the id page-wrap */
 
+body                            { font: 12px "Lucida Grande", Sans-Serif; background: #ccc; }
 table                           { padding: 2px 2px 2px 2px; } /* play around with this */
 td                              { padding: 2px 2px 2px 2px; text-align: center;  }
 
 .clear							{ clear: both; }
 input[type="text"], textarea	{ padding: 3px; border: 1px solid #666; width: 350px;
-								  margin: 0 0 15px 0; }
+								  margin: 0 0 25px 0; }
 input[type="text"]				{ font: 28px Georgia, Serif; }
-textarea						{ height: 100px; font: 12px "Lucida Grande", Sans-Serif; }
 label							{ background: #666; color: white; padding: 2px 6px; }
 
 
 .post							{ margin: 0 0 20px 0; }
+
+
+
