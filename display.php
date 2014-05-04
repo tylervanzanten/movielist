@@ -1,29 +1,17 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!DOCTYPE html> 
 
   <!--
-    *********************************************************************************
-    * 
-    * File: display.php   | For retrieving and displaying data from the DB.
-    * 
-    * 
-    * Created by Jason Lengstorf for Ennui Design. Copyright (C) 2008 Ennui Design.
-    * 
-    *        www.EnnuiDesign.com | answers@ennuidesign.com | (406) 270-4435
-    * 
-    * -----------------------------------------------------------------------------
-    * 
-    * This file was created to accompany an article written for CSS-Tricks.com
-    * 
-    *********************************************************************************
+  	display.php is a PHP file which creates an instance of the class MovieClassCMS
+  	and calls methods to make it function as it should.
+  	
+  	Author: Tyler VanZanten
+  	Date: May 3, 2014
   -->
 
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Movie" content="text/html; charset=UTF-8" />
     
-    <title>Simple CMS with PHP</title>
+    <title>Movie Watch List</title>
     
     <link rel="stylesheet" type="text/css" href="style.css" />
   </head>
@@ -32,23 +20,58 @@
   	<div id="page-wrap">
     <?php
     
-      include_once('simpleCMS.php');
-      $obj = new simpleCMS();
+      include_once('MovieListCMS.php');
+      include_once('\imdbphp\imdb.class.php');
+      $obj = new MovieListCMS();
 
 	  /* CHANGE THESE SETTINGS FOR YOUR OWN DATABASE */
-      $obj->host = 'localhost';
+      $obj->host     = 'localhost';
       $obj->username = 'root';
-     // $obj->password = 'db_password';
-      $obj->table = 'testDB';
-	  $obj->database = "testDB";
+      $obj->password = '';
+      $obj->table    = 'movielistdb';
+	  $obj->database = 'movielistdb';
       $obj->connect();
-    
-      if ( $_POST )
-        $obj->write($_POST);
-    
-      echo ( $_GET['admin'] == 1 ) ? $obj->display_admin() : $obj->display_public();
-    
+
+
+      $postType = isset($_POST['type']) ? $_POST['type'] : '';
+      if ( $postType === "new_form" ) {
+          $obj->write($_POST);
+      }
+      elseif ( $postType === "edit_form" ) {
+          $obj->update($_POST);
+          $obj->priority_update();
+      }
+      
+      $deleteItem = isset($_GET['deleteItem']) ? $_GET['deleteItem'] : '';
+      if( $deleteItem !== "" )
+      {
+          $obj->delete($deleteItem);
+          echo $obj->display("priority");                          // display the HTML table
+          echo "$deleteItem has been removed from the list."; 
+      }       
+
+      $admin = isset($_GET['admin']) ? $_GET['admin'] : '';
+      if ( $admin == 1 )
+      {
+          echo $obj->display_new_form();
+      }
+      elseif ( $admin == 2 ) 
+      {
+          $obj->clear_list();
+          echo $obj->display("priority");
+      }
+      elseif ( $admin !== ''  ) 
+      {
+          echo $obj->display_edit_form($admin);
+      }
+	  
+      $sort = isset($_GET['sort']) ? $_GET['sort'] : 'priority';  // sort by priority is default
+      if ( $admin === "" && $deleteItem === "") {
+	      echo $obj->display($sort);                     // display the HTML table
+      }      
+      
     ?>
+    
 	</div>
   </body>
 

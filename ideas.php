@@ -1,13 +1,14 @@
 <?php
 Things to do:
 
-maybe (link three DBs together for director, writer, actor, and maybe genre)
-add delete capability  (and make sure the priorities get updated everytime something gets deleted)
-add edit capability
-add "clear list" button  and then ask "are you sure?"
-make it look nice
+ask "are you sure?"  when a user clicks clear list
+
+make the: 
+Add a movie to get started! Click the link above. 
+text larger size font.
+
+make it look nice      (have the criteria it's currently sorted by be a different color)   '
 add search capability
-automatically fetch the RIGHT info from imdb (be able to search by year and title)
 make the title in the list a link to the imdb URL for that movie
 
 probably change the class name from CMS to MovieList or something
@@ -15,28 +16,6 @@ probably change the class name from CMS to MovieList or something
 //title, year, genre, cast, director, writer, runtime, imdb rating, mpaa rating,
 
 
-// deleting an entry
-$query = "DELETE FROM $this->table WHERE title = '$deleteItem' ";
-$query = "DELETE FROM $this->table WHERE title = $deleteItem ";
-
-//image address link
-
-<p>Create a link of an image:
-<a href="default.asp"><img src="smiley.gif" alt="HTML tutorial" width="42" height="42"></a></p>
-
-// updating the priorities when a movie gets deleted from the list
-                
-                mysqli_query("
-                UPDATE '".$this->table."'
-                SET priority = priority - 1
-                WHERE priority > '".$i."'
-                ");
-
-
-
-// a form image button, I think I need something different for my delete and edit buttons
-<input type="image" src="rainbow.gif" name="image" width="60" height="60">
-// http://www.echoecho.com/htmlforms14.htm
 
 
 // round corners on the tables

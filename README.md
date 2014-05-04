@@ -11,14 +11,6 @@ I did not write any of the files found in the imdbphp folder.  All of those file
 
 ## Usage
 
-You must edit the mySQL database   ....   for it to work.
+You will need to edit the SQL database info for it to work with your own database.
 
-
-## Changes
-
-1.3
-- Fixed something.
-
-
-
-
+    

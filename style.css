@@ -1,6 +1,7 @@
 *								{ margin: 0; padding: 0; }
 
-.new_movie_link                 { font-size: 25px; color: blue;  } /* formatting for elements of the class new_movie_link   NEED TO FIND A WAY TO MAKE IT PERMANENTLY BLUE*/
+.topOfList                      { font-size: 25px; color: blue;  } /* formatting for elements of the class topOfList   NEED TO FIND A WAY TO MAKE IT PERMANENTLY BLUE*/
+#clearList                      { text-align: right;  }
 body							{ font: 12px "Lucida Grande", Sans-Serif; background: #ccc; }
 #page-wrap						{ width: 700px; margin: 50px auto; padding: 20px; background: white; } /* formatting for elements with the id page-wrap */
 
