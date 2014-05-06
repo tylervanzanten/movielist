@@ -1,6 +1,6 @@
-
-
 <?php
+
+// Used to verify that the imdb.class.php is working correctly
 
 include_once '\imdbphp\imdb.class.php';
 

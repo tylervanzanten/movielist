@@ -105,7 +105,7 @@ TABLE_START;
 
     		<tr>
     		    <td><a href="{$_SERVER['PHP_SELF']}?deleteItem=$title">
-                    <img src="images/x-mark4.jpg" alt="Error! Image cannot be displayed."></a></td>
+                    <img src="images/x-mark.jpg" alt="Error! Image cannot be displayed."></a></td>
     		    <td><a href="{$_SERVER['PHP_SELF']}?admin=$title" id = update>Edit</a></td>
            		<td>$priority</td>
             	<td>$title</td>
