@@ -10,15 +10,18 @@
 class MovieListCMS {
   var $host;      // host name or an IP address
   var $username;  // MySQL user name. 
-  var $password;  // 
+  var $password;  // MySQL password
   var $table;     // SQL table name that stores the list
   var $database;  // SQL database name
   private $link;  //object returned by mysqli_connect()
 
   
   // Connect to the mySQL table
+  // PRE: the member variables of the class have been set.
+  // Return: mysqli_result object which was returned from buildMovieDB()
   public function connect() {
-    $this->link = mysqli_connect($this->host,$this->username,$this->password) or die("Could not connect. " . mysqli_connect_error());
+    $this->link = mysqli_connect($this->host,$this->username,$this->password) or 
+                                 die("Could not connect. " . mysqli_connect_error());
     mysqli_select_db($this->link, $this->database) or die("Could not select database. " . mysqli_error($link));
     
     return $this->buildMovieDB();
@@ -27,6 +30,7 @@ class MovieListCMS {
  
   // Constructs the SQL table to store the movie watch list
   // if it does not already exist.
+  // Return: mysqli_result object
   private function buildMovieDB() {
     $sql = <<<MySQL_QUERY
 CREATE TABLE IF NOT EXISTS $this->table (
@@ -48,7 +52,7 @@ MySQL_QUERY;
   
   
   // displays the movie list as an html table
-  // Receive: $sortType, a string specifying what criteria
+  // Receive: $sortType, a string specifying what field
   // to sort the list by.
   // Return: html code.
   public function display($sortType) {
@@ -64,11 +68,11 @@ MySQL_QUERY;
         <a href="{$_SERVER['PHP_SELF']}?admin=1" id = newMovie style="color:blue;">Add a Movie</a>
       </div>
     <br>
-    
+
 NEW_MOVIE_LINK;
 
 
-    if ( $result !== false && mysqli_num_rows($result) !== 0 ) {  // if the list is not empty
+    if ( $result !== false && mysqli_num_rows($result) !== 0 ) {  // selection
       $table_display .= <<<TABLE_START
 
       <form action="" method="post">
@@ -88,7 +92,7 @@ NEW_MOVIE_LINK;
         	</tr>
     	</thead>
     	<tbody>
-    	
+
 TABLE_START;
 
       while ( $row = mysqli_fetch_assoc($result) ) {  // repetition
@@ -143,6 +147,7 @@ EMPTY_LIST;
 
 
   // Displays an html form for a movie to be added to the list
+  // Receive: none
   // Return: an html form
   public function display_new_form() {
     return <<<NEW_MOVIE_FORM
@@ -186,28 +191,27 @@ EMPTY_LIST;
     </form>
     
     <br />
-    <!--Comment: Make sure the link below points to the .php file you want it to-->
     <a href="display.php">Back to Home</a>
 
 NEW_MOVIE_FORM;
   }
 
-  
+
   // Adds a movie to the mySQL table
   // Receive: $p, a $_POST variable which was created by
   // calling display_new_form().
   // Return: the object returned by the MySQL query or false if the user
   // did not specify a title for the movie to be added.
   public function write($p) {
-	$genre    = "";
-	$year     = "";
-    $director = "";
-    $writer   = "";
-	$runtime  = "";
-	$imdbRating = "";
-    if ( $_POST['title'] )
+   $genre    = "";
+   $year     = "";
+   $director = "";
+   $writer   = "";
+   $runtime  = "";
+   $imdbRating = "";
+   if ( $_POST['title'] )    // selection
         $title = mysqli_real_escape_string($this->link, $_POST['title']);
-    if ( $title ) {
+   if ( $title ) {
         $created = date('Y M d');   // Format: YYYY-MM-DD;
         $query = "SELECT * FROM $this->table ORDER BY priority ASC";
         $result = mysqli_query($this->link, $query);
@@ -217,7 +221,6 @@ NEW_MOVIE_FORM;
         }
     	$priority = $size + 1;
     	if ( $_POST['priority'] ) {
-    	    $priority = mysqli_real_escape_string($this->link, $_POST['priority']);
             $priorityStr = mysqli_real_escape_string($this->link, $_POST['priority']);
             $priority    = intval($priorityStr);
     	    if ($priority > $size) {
@@ -232,6 +235,12 @@ NEW_MOVIE_FORM;
         }
         if ( $_POST['year'] ) {
     	    $year = mysqli_real_escape_string($this->link, $_POST['year']);
+        }
+        if ( $_POST['director'] ) {
+            $director = mysqli_real_escape_string($this->link, $_POST['director']);
+        }
+        if ( $_POST['writer'] ) {
+            $writer = mysqli_real_escape_string($this->link, $_POST['writer']);
         }
         $fetchIMDb = isset($_POST['fetchIMDb']) ? $_POST['fetchIMDb'] : '';
         if ( $fetchIMDb ) {
@@ -250,7 +259,8 @@ NEW_MOVIE_FORM;
             $runtime = intval(substr($runtime, 0, $runtime - 4));
             $imdbRating = $movie->getRating();
     	}}
-        $sql  = "INSERT INTO $this->table VALUES('$priority','$title','$year','$genre','$director','$writer','$runtime','$imdbRating','$created')";
+        $sql  = "INSERT INTO $this->table VALUES('$priority','$title','$year','$genre',
+                '$director','$writer','$runtime','$imdbRating','$created')";
         return mysqli_query($this->link, $sql);
     } else {
         return false;
@@ -258,14 +268,13 @@ NEW_MOVIE_FORM;
   }
 
 
-  
+
   // Deletes a movie from the database table
   // Receive: $deleteItem, a string specifying the name of a movie.
   // PRE: $deleteItem is in the table.
-  // Return: 
+  // Return: none.
   // POST: $deleteItem has been deleted from the table.
   public function delete($deleteItem) {
-
     $query = "SELECT * FROM $this->table WHERE title='$deleteItem'";
     $result = mysqli_query($this->link, $query);
     $row = mysqli_fetch_array($result); 
@@ -274,8 +283,7 @@ NEW_MOVIE_FORM;
     $query = "UPDATE $this->table SET priority = priority - 1 WHERE priority > $priority";
     mysqli_query($this->link, $query);            
     $query = "DELETE FROM $this->table WHERE title='$deleteItem'";
-    return mysqli_query($this->link, $query);
-  
+    mysqli_query($this->link, $query);
   }
   
   
@@ -285,10 +293,8 @@ NEW_MOVIE_FORM;
   // Return: an HTML form.
   // POST: the entry has been successfully updated.
   public function display_edit_form( $title ) {
-    
     $query = "SELECT * FROM $this->table WHERE title='$title'";
     $result = mysqli_query($this->link, $query);
-    
     $row = mysqli_fetch_array($result); 
     $titleup    = stripslashes($row['title']);
     $priorityup = stripslashes($row['priority']);
@@ -338,7 +344,6 @@ NEW_MOVIE_FORM;
     </form>
     
     <br />
-    <!--Comment: Make sure the link below points to the .php file you want it to-->
     <a href="display.php">Back to Home</a>
 
 EDIT_MOVIE_FORM;
@@ -370,7 +375,6 @@ EDIT_MOVIE_FORM;
         }
         $priority = $size + 1;
         if ( $_POST['priority'] ) {
-            $priority = mysqli_real_escape_string($this->link, $_POST['priority']);
             $priorityStr = mysqli_real_escape_string($this->link, $_POST['priority']);
             $priority    = intval($priorityStr);
             if ($priority > $size) {
@@ -388,6 +392,12 @@ EDIT_MOVIE_FORM;
         if ( $_POST['year'] ) {
             $year = mysqli_real_escape_string($this->link, $_POST['year']);
         }
+        if ( $_POST['director'] ) {
+            $director = mysqli_real_escape_string($this->link, $_POST['director']);
+        }
+        if ( $_POST['writer'] ) {
+            $writer = mysqli_real_escape_string($this->link, $_POST['writer']);
+        }
         $fetchIMDb = isset($_POST['fetchIMDb']) ? $_POST['fetchIMDb'] : '';
         if ( $fetchIMDb ) {
         $movie = new IMDB($title);
@@ -404,8 +414,13 @@ EDIT_MOVIE_FORM;
             $length = strlen($runtime);
             $runtime = intval(substr($runtime, 0, $runtime - 4));
             $imdbRating = $movie->getRating();
+            $sql  = "UPDATE $this->table SET priority = '$priority', year = '$year', genre = '$genre', 
+                     director = '$director', writer = '$writer', runtime = '$runtime', 
+                     imdbRating = '$imdbRating', created = '$created' WHERE title = '$title'";
+        return mysqli_query($this->link, $sql);
         }}
-        $sql  = "UPDATE $this->table SET priority = '$priority', year = '$year', genre = '$genre', director = '$director', writer = '$writer', runtime = '$runtime', imdbRating = '$imdbRating', created = '$created' WHERE title = '$title'";
+        $sql  = "UPDATE $this->table SET priority = '$priority', year = '$year', genre = '$genre', 
+                 director = '$director', writer = '$writer', created = '$created' WHERE title = '$title'";
         return mysqli_query($this->link, $sql);
     } else {
         return false;

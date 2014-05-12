@@ -8,8 +8,8 @@ a:visited                       { color: blue; }
 #page-wrap						{ width: 850px; margin: 50px auto; padding: 20px; background: white; } /* formatting for elements with the id page-wrap */
 
 body                            { font: 12px "Lucida Grande", Sans-Serif; background: #ccc; }
-table                           { padding: 2px 2px 2px 2px; } /* play around with this */
-td                              { padding: 2px 2px 2px 2px; text-align: center;  }
+table                           { padding: 2px 2px 2px 2px; } 
+td                              { padding: 2px 6px 2px 6px; text-align: center;  }
 
 .clear							{ clear: both; }
 input[type="text"], textarea	{ padding: 3px; border: 1px solid #666; width: 350px;
