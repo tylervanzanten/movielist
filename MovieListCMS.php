@@ -307,6 +307,7 @@ NEW_MOVIE_FORM;
 
     <form action="{$_SERVER['PHP_SELF']}" method="post">
       <input type="hidden" name="type" id="type" value="edit_form" />
+      <input type="hidden" name="oldTitle" id="oldTitle" value="$titleup" />
     
       <label for="title">Title:</label><br />
       <input name="title" id="title" type="text" value="$titleup" maxlength="150" tabindex="1" />
@@ -334,7 +335,7 @@ NEW_MOVIE_FORM;
       
       <br>
       <label for="fetchIMDb">
-      <input type="checkbox" name="fetchIMDb" value="fetchIMDb" id="fetchIMDb" tabindex="8" checked>
+      <input type="checkbox" name="fetchIMDb" value="fetchIMDb" id="fetchIMDb" tabindex="8">
       Automatically add missing info from IMDb
       </label>
       <br>
@@ -366,6 +367,7 @@ EDIT_MOVIE_FORM;
     if ( $_POST['title'] )
         $title = mysqli_real_escape_string($this->link, $_POST['title']);
     if ( $title ) {
+        $oldTitle = mysqli_real_escape_string($this->link, $_POST['oldTitle']);
         $created = date('Y M d');   // Format: YYYY-MM-DD;
         $query = "SELECT * FROM $this->table ORDER BY priority ASC";
         $result = mysqli_query($this->link, $query);
@@ -414,13 +416,13 @@ EDIT_MOVIE_FORM;
             $length = strlen($runtime);
             $runtime = intval(substr($runtime, 0, $runtime - 4));
             $imdbRating = $movie->getRating();
-            $sql  = "UPDATE $this->table SET priority = '$priority', year = '$year', genre = '$genre', 
+            $sql  = "UPDATE $this->table SET title = '$title', priority = '$priority', year = '$year', genre = '$genre', 
                      director = '$director', writer = '$writer', runtime = '$runtime', 
-                     imdbRating = '$imdbRating', created = '$created' WHERE title = '$title'";
+                     imdbRating = '$imdbRating', created = '$created' WHERE title = '$oldTitle'";
         return mysqli_query($this->link, $sql);
         }}
-        $sql  = "UPDATE $this->table SET priority = '$priority', year = '$year', genre = '$genre', 
-                 director = '$director', writer = '$writer', created = '$created' WHERE title = '$title'";
+        $sql  = "UPDATE $this->table SET title = '$title', priority = '$priority', year = '$year', genre = '$genre', 
+                 director = '$director', writer = '$writer', created = '$created' WHERE title = '$oldTitle'";
         return mysqli_query($this->link, $sql);
     } else {
         return false;
